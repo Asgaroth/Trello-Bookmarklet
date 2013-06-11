@@ -5,9 +5,13 @@
     switch(type){
       case "User Story":
       case "Feature":
-        return "User Story/Feature";
+        return "green";
+      case "RedBug":
+        return "red";
+      case "Support":
+        return "blue";
       default:
-        return type;
+        return "";
     }
 
   };

@@ -1,58 +1,33 @@
 (function(window){
   var $;
 
+  var getLabel = function(type){
+    switch(type){
+      case "User Story":
+      case "Feature":
+        return "User Story/Feature";
+      default:
+        return type;
+    }
+
+  };
+
   /* This is run after we've connected to Trello and selected a list */
   var run = function(Trello, idList) {
     var name;
     // Default description is the URL of the page we're looking at
     var desc = location.href;
 
-    if(window.goBug) {
+    var label = "RedBug";
 
-      // We're looking at a FogBugz case
-      name = goBug.ixBug + ": " + goBug.sTitle
-
-    } else if ($("#issue_header_summary").length){
-
-      // We're looking at a JIRA case in an older JIRA installation
-      name = $("#key-val").text() + ": " + $("#issue_header_summary").text();
-
-    } else if ($("#jira").length){
-
-      // We're looking at a 5.1+ JIRA case
-      name = $("#key-val").text() + ": " + $("#summary-val").text();
-
-    } else if ($("#show_issue").length) {
-
-      // We're looking at a GitHub issue
-      name = $("#show_issue .number strong").text() + " " + $("#show_issue .discussion-topic-title").text();
-
-    } else if ($("#all_commit_comments").length) {
-
-      // We're looking at a GitHub commit
-      name = $(".js-current-repository").text().trim() + ": " + $(".commit .commit-title").text().trim();
-
-    } else if (jQuery('head meta[content=Redmine]').length) {
-
+    if(jQuery('head meta[content=Redmine]').length) {
       // We're looking at a redmine issue
-      name = $("#content h2:first").text().trim() + ": " + $("#content h3:first").text().trim();
-
-    } else if ($('#header h1').length) {
-
-        // We're looking at a RequestTracker (RT) ticket
-        name = $('#header h1').text().trim();
-
-    } else if ($('h1 .hP').length){
-
-        // we're looking at an email in Gmail
-        name = $('h1 .hP').text().trim();
-
-    }
-
-    else {
-        // use page title as card title, taking trello as a "read-later" tool
-        name = $.trim(document.title);
-
+      var type = $("#content h2:first").text().trim();
+      name = type + " - " + $("#content h3:first").text().trim();
+      label = getLabel(type.split("#")[0].trim());
+    } else {
+      // use page title as card title, taking trello as a "read-later" tool
+      name = $.trim(document.title);
     }
 
     // Get any selected text
@@ -80,7 +55,8 @@
       console.log("Creating card on trello for list", idList);
       Trello.post("lists/" + idList + "/cards", {
         name: name,
-        desc: desc
+        desc: desc,
+        labels: label
       }, function(card){
         // Display a little notification in the upper-left corner with a link to the card
         // that was just created

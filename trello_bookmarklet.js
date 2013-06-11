@@ -77,16 +77,16 @@
           padding: "4px",
           border: "1px solid #000",
           background: "#fff",
-          "z-index": 1e3
+          "z-index": "100"
         })
-        .appendTo("body")
+        .appendTo("body");
 
         setTimeout(function(){
           $cardLink.fadeOut(3000);
-        }, 5000)
-      })
+        }, 5000);
+      });
     }
-  }
+  };
 
   var storage = window.localStorage;
   if(!storage) {
@@ -114,7 +114,7 @@
     var $overlay = $("<div>")
     .css({
       background: "#000",
-      opacity: .75,
+      opacity: 0.75,
       "z-index": 1e4,
       position: "absolute",
       left: 0,
@@ -125,7 +125,7 @@
     .appendTo("body")
     .click(function(){
       done(null);
-    })
+    });
 
     // Show a "popup"
     var $div = $("<div>")
@@ -176,11 +176,11 @@
   var waterfall = function(fxs){
     var runNext = function(){
       if(fxs.length){
-        fxs.shift().apply(null, Array.prototype.slice.call(arguments).concat([runNext]))
+        fxs.shift().apply(null, Array.prototype.slice.call(arguments).concat([runNext]));
       }
-    }
+    };
     runNext();
-  }
+  };
 
   // The ids of values we keep in localStorage
   var appKeyName = "trelloAppKey";
@@ -193,8 +193,8 @@
       script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js";
       script.onload = function(){
         window.jq17 = jQuery.noConflict();
-        next(null); 
-      }
+        next(null);
+      };
       document.getElementsByTagName("head")[0].appendChild(script);
     },
     // Get the user's App Key, either from local storage, or by prompting them to retrieve it
@@ -210,14 +210,14 @@
           if(newAppKey) {
             next(newAppKey);
           }
-        })
+        });
       }
     },
     // Load the Trello script
     function(appKey, next) { $.getScript("https://trello.com/1/client.js?key=" + appKey, next); },
     // Authorize our application
     function(a, b, c, next) {
-      store(appKeyName, Trello.key())
+      store(appKeyName, Trello.key());
       Trello.authorize({
         interactive: false,
         success: next,
@@ -243,10 +243,10 @@
           $prompt = overlayPrompt('Which list should cards be sent to?<hr><div class="boards"></div>', false, function(){
             idList = $prompt.find("input:checked").attr("id");
             next(idList);
-          })
+          });
 
           $.each(boards, function(ix, board){
-            $board = $("<div>").appendTo($prompt.find(".boards"))
+            $board = $("<div>").appendTo($prompt.find(".boards"));
 
             Trello.get("boards/" + board.id + "/lists", function(lists){
               $.each(lists, function(ix, list) {
@@ -255,7 +255,7 @@
                 $("<input type='radio'>").attr("id", idList).attr("name", "idList").appendTo($div);
                 $("<label>").text(board.name + " : " + list.name).attr("for", idList).appendTo($div);
               });
-            })
+            });
           });
         });
       }

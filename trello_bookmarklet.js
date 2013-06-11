@@ -31,9 +31,9 @@
 
       // We're looking at a GitHub commit
       name = $(".js-current-repository").text().trim() + ": " + $(".commit .commit-title").text().trim();
-      
+
     } else if (jQuery('head meta[content=Redmine]').length) {
-      
+
       // We're looking at a redmine issue
       name = $("#content h2:first").text().trim() + ": " + $("#content h3:first").text().trim();
 
@@ -43,16 +43,16 @@
         name = $('#header h1').text().trim();
 
     } else if ($('h1 .hP').length){
-        
+
         // we're looking at an email in Gmail
         name = $('h1 .hP').text().trim();
-    
+
     }
-    
+
     else {
         // use page title as card title, taking trello as a "read-later" tool
         name = $.trim(document.title);
-        
+
     }
 
     // Get any selected text
@@ -72,13 +72,14 @@
         desc += "\n\n" + selection;
       }
     }
-    
+
     name = name || 'Unknown page';
 
     // Create the card
     if(name) {
-      Trello.post("lists/" + idList + "/cards", { 
-        name: name, 
+      console.log("Creating card on trello for list", idList);
+      Trello.post("lists/" + idList + "/cards", {
+        name: name,
         desc: desc
       }, function(card){
         // Display a little notification in the upper-left corner with a link to the card
@@ -165,7 +166,7 @@
 
     // Optionally show an input
     var $input = $("<input>")
-    .css({ 
+    .css({
       width: "100%",
       "margin-top": "8px"
     })
@@ -175,8 +176,8 @@
     // Add an "OK" button
     $("<div>")
     .text("OK")
-    .css({ 
-      width: "100%", 
+    .css({
+      width: "100%",
       "text-align": "center",
       border: "1px solid #000",
       background: "#eee",
@@ -185,7 +186,7 @@
     })
     .appendTo($div)
     .click(function(){
-      done($input.val());      
+      done($input.val());
     });
 
     return $div;
@@ -278,14 +279,14 @@
             })
           });
         });
-      }      
+      }
     },
     // Store the idList for later
     function(idList, next) {
       if(idList) {
         store(idListName, idList);
         next(Trello, idList);
-      }      
+      }
     },
     // Run the user portion
     run

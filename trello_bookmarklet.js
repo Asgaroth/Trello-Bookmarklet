@@ -209,18 +209,17 @@
   waterfall([
     // Load jQuery
     function(next) {
-      if(window.jQuery) {
-        next(null);
-      } else {
-        var script = document.createElement("script");
-        script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js";
-        script.onload = next;
-        document.getElementsByTagName("head")[0].appendChild(script);
+      var script = document.createElement("script");
+      script.src = "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js";
+      script.onload = function(){
+        window.jq17 = jQuery.noConflict();
+        next(null); 
       }
+      document.getElementsByTagName("head")[0].appendChild(script);
     },
     // Get the user's App Key, either from local storage, or by prompting them to retrieve it
     function(ev, next) {
-      $ = window.jQuery;
+      $ = window.jq17;
 
       var appKey = store(appKeyName) || window[appKeyName];
       if(appKey && appKey.length == 32) {

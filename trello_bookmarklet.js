@@ -29,6 +29,15 @@
       var type = $("#content h2:first").text().trim();
       name = type + " - " + $("#content h3:first").text().trim();
       label = getLabel(type.split("#")[0].trim());
+
+      var pnts = $('table.attributes tr').eq(-3).find('td').text();
+      if (pnts != '-' && pnts != 'S') {
+        name = "("+pnts+") " + name;
+      }
+      var assignedTo = $('table.attributes td.assigned-to').text();
+      if (assignedTo != '-') {
+        name += " ("+assignedTo+")";
+      }
     } else {
       // use page title as card title, taking trello as a "read-later" tool
       name = $.trim(document.title);

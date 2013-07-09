@@ -30,7 +30,7 @@
       name = type + " - " + $("#content h3:first").text().trim();
       label = getLabel(type.split("#")[0].trim());
 
-      var pnts = $('table.attributes tr').eq(-3).find('td').text();
+      var pnts = $('table.attributes tr').eq(7).find('td').text();
       if (pnts != '-' && pnts != 'S') {
         name = "("+pnts+") " + name;
       }

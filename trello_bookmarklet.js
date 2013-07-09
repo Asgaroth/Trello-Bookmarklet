@@ -34,7 +34,7 @@
       if (pnts != '-' && pnts != 'S') {
         name = "("+pnts+") " + name;
       }
-      var assignedTo = $('table.attributes td.assigned-to').text();
+      var assignedTo = $('table.attributes td.assigned-to a').text();
       if (assignedTo != '-') {
         name += " ("+assignedTo+")";
       }
